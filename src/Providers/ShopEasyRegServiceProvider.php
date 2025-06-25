@@ -87,6 +87,8 @@ class ShopEasyRegServiceProvider extends BasePluginServiceProvider
                 'shop.cart.payment' => [\Azuriom\Plugin\ShopEasyReg\Overrides\CartController::class, 'payment'],
                 'shop.packages.buy' => [\Azuriom\Plugin\ShopEasyReg\Overrides\PackageController::class, 'buy'],
                 'shop.packages.variables' => [\Azuriom\Plugin\ShopEasyReg\Overrides\PackageController::class, 'buy'],
+                'shop.packages.show' => [\Azuriom\Plugin\ShopEasyReg\Overrides\PackageController::class, 'show'],
+                'shop.packages.file' => [\Azuriom\Plugin\ShopEasyReg\Overrides\PackageController::class, 'downloadFile'],
             ];
 
             foreach ($replaceControllers as $name => $action) {
