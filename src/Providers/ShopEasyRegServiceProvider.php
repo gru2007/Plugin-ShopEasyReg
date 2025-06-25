@@ -66,6 +66,62 @@ class ShopEasyRegServiceProvider extends BasePluginServiceProvider
         // Переопределяем шаблоны магазина нашими версиями.
         // Непереопределённые представления будут загружены из оригинального плагина.
         view()->prependNamespace('shop', $this->pluginResourcePath('views/overrides'));
+
+        // Меняем настройки маршрутов магазина для работы гостевой корзины
+        $this->overrideShopRoutes();
+    }
+
+    /**
+     * Удаление middleware авторизации и замена контроллеров магазина.
+     */
+    protected function overrideShopRoutes(): void
+    {
+        $router = app('router');
+
+        $this->app->booted(function () use ($router) {
+            $replaceControllers = [
+                'shop.cart.index' => [\Azuriom\Plugin\ShopEasyReg\Overrides\CartController::class, 'index'],
+                'shop.cart.update' => [\Azuriom\Plugin\ShopEasyReg\Overrides\CartController::class, 'update'],
+                'shop.cart.remove' => [\Azuriom\Plugin\ShopEasyReg\Overrides\CartController::class, 'remove'],
+                'shop.cart.clear' => [\Azuriom\Plugin\ShopEasyReg\Overrides\CartController::class, 'clear'],
+                'shop.cart.payment' => [\Azuriom\Plugin\ShopEasyReg\Overrides\CartController::class, 'payment'],
+                'shop.packages.buy' => [\Azuriom\Plugin\ShopEasyReg\Overrides\PackageController::class, 'buy'],
+                'shop.packages.variables' => [\Azuriom\Plugin\ShopEasyReg\Overrides\PackageController::class, 'buy'],
+            ];
+
+            foreach ($replaceControllers as $name => $action) {
+                $route = $router->getRoutes()->getByName($name);
+
+                if ($route !== null) {
+                    $route->uses([$action[0], $action[1]]);
+                }
+            }
+
+            $removeAuth = [
+                'shop.cart.index',
+                'shop.cart.update',
+                'shop.cart.remove',
+                'shop.cart.clear',
+                'shop.cart.payment',
+                'shop.cart.coupons.add',
+                'shop.cart.coupons.remove',
+                'shop.cart.coupons.clear',
+                'shop.cart.giftcards.add',
+                'shop.cart.giftcards.remove',
+                'shop.packages.buy',
+                'shop.packages.variables',
+            ];
+
+            foreach ($removeAuth as $name) {
+                $route = $router->getRoutes()->getByName($name);
+
+                if ($route !== null) {
+                    $middleware = array_values(array_diff($route->middleware(), ['auth']));
+
+                    $route->middleware($middleware);
+                }
+            }
+        });
     }
 
     /**
