@@ -8,13 +8,12 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends BaseRouteServiceProvider
 {
     /**
-     * Define the routes for the application.
+     * Загрузка маршрутов плагина.
      */
     public function loadRoutes(): void
     {
+        // Веб-маршруты без префикса, чтобы переопределить маршруты магазина
         Route::middleware('web')
-            ->prefix($this->plugin->id)
-            ->name($this->plugin->id.'.')
             ->group(plugin_path($this->plugin->id.'/routes/web.php'));
 
         Route::middleware('admin-access')

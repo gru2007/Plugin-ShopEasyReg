@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Plugin home')
+@section('title', 'Главная плагина')
 
 @section('content')
-    <p>This is the demo page of your plugin.</p>
+    <p>Это демонстрационная страница плагина.</p>
 @endsection
