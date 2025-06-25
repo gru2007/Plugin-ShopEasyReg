@@ -18,15 +18,12 @@ class CartController extends Controller
      */
     public function index(Request $request)
     {
-        // Если гостевая корзина отключена, перенаправляем на страницу входа
-        if (!setting('shop.cart_auth', false) && auth()->guest()) {
-            return redirect()->route('login');
-        }
-
-        // Запоминаем корзину как запрошенную страницу для перенаправления после входа
+        // Если пользователь не авторизован, запоминаем адрес корзины для
+        // перенаправления после регистрации или входа
         if (auth()->guest()) {
             $request->session()->put('url.intended', route('shop.cart.index'));
         }
+
 
         $terms = setting('shop.required_terms');
 
@@ -50,9 +47,6 @@ class CartController extends Controller
      */
     public function remove(Request $request, Package $package)
     {
-        if (!setting('shop.cart_auth', false) && auth()->guest()) {
-            return redirect()->route('login');
-        }
 
         $cart = Cart::fromSession($request->session());
 
@@ -66,9 +60,6 @@ class CartController extends Controller
      */
     public function update(Request $request)
     {
-        if (!setting('shop.cart_auth', false) && auth()->guest()) {
-            return redirect()->route('login');
-        }
 
         $cart = Cart::fromSession($request->session());
 
@@ -90,9 +81,6 @@ class CartController extends Controller
      */
     public function clear(Request $request)
     {
-        if (!setting('shop.cart_auth', false) && auth()->guest()) {
-            return redirect()->route('login');
-        }
 
         Cart::fromSession($request->session())->clear();
 

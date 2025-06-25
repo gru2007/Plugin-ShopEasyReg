@@ -63,6 +63,13 @@ class ShopEasyRegServiceProvider extends BasePluginServiceProvider
 
         $this->registerUserNavigation();
 
+        // Включаем гостевую корзину по умолчанию при первой установке
+        if (setting('shop.cart_auth') === null) {
+            \Azuriom\Models\Setting::updateSettings([
+                'shop.cart_auth' => true,
+            ]);
+        }
+
         // Переопределяем шаблоны магазина нашими версиями.
         // Непереопределённые представления будут загружены из оригинального плагина.
         view()->prependNamespace('shop', $this->pluginResourcePath('views/overrides'));
