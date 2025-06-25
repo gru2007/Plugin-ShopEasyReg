@@ -7,26 +7,26 @@ use Azuriom\Extensions\Plugin\BasePluginServiceProvider;
 class ShopEasyRegServiceProvider extends BasePluginServiceProvider
 {
     /**
-     * The plugin's global HTTP middleware stack.
+     * Глобальные HTTP middleware плагина.
      */
     protected array $middleware = [
         // \Azuriom\Plugin\ShopEasyReg\Middleware\ExampleMiddleware::class,
     ];
 
     /**
-     * The plugin's route middleware groups.
+     * Группы middleware для маршрутов плагина.
      */
     protected array $middlewareGroups = [];
 
     /**
-     * The plugin's route middleware.
+     * Middleware для маршрутов плагина.
      */
     protected array $routeMiddleware = [
         // 'example' => \Azuriom\Plugin\ShopEasyReg\Middleware\ExampleRouteMiddleware::class,
     ];
 
     /**
-     * The policy mappings for this plugin.
+     * Связка политик с моделями плагина.
      *
      * @var array<string, string>
      */
@@ -35,7 +35,7 @@ class ShopEasyRegServiceProvider extends BasePluginServiceProvider
     ];
 
     /**
-     * Register any plugin services.
+     * Регистрация сервисов плагина.
      */
     public function register(): void
     {
@@ -45,7 +45,7 @@ class ShopEasyRegServiceProvider extends BasePluginServiceProvider
     }
 
     /**
-     * Bootstrap any plugin services.
+     * Загрузка сервисов плагина.
      */
     public function boot(): void
     {
@@ -63,42 +63,46 @@ class ShopEasyRegServiceProvider extends BasePluginServiceProvider
 
         $this->registerUserNavigation();
 
-        //
+        // Переопределяем шаблоны магазина нашими версиями.
+        // Непереопределённые представления будут загружены из оригинального плагина.
+        view()->prependNamespace('shop', $this->pluginResourcePath('views/overrides'));
     }
 
     /**
-     * Returns the routes that should be able to be added to the navbar.
+     * Маршруты, которые можно добавить в навигацию.
      *
      * @return array<string, string>
      */
     protected function routeDescriptions(): array
     {
         return [
-            //
+            'shopeasyreg.admin.index' => trans('shopeasyreg::messages.nav.title'),
         ];
     }
 
     /**
-     * Return the admin navigations routes to register in the dashboard.
+     * Разделы панели администратора.
      *
      * @return array<string, array<string, string>>
      */
     protected function adminNavigation(): array
     {
         return [
-            //
+            'shopeasyreg' => [
+                'name' => trans('shopeasyreg::messages.nav.title'),
+                'icon' => 'bi bi-person-plus',
+                'route' => 'shopeasyreg.admin.index',
+            ],
         ];
     }
 
     /**
-     * Return the user navigations routes to register in the user menu.
+     * Ссылки в пользовательском меню.
      *
      * @return array<string, array<string, string>>
      */
     protected function userNavigation(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

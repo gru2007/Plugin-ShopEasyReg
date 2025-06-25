@@ -7,7 +7,7 @@ use Azuriom\Http\Controllers\Controller;
 class AdminController extends Controller
 {
     /**
-     * Show the home admin page of the plugin.
+     * Отображение главной страницы администрирования плагина.
      */
     public function index()
     {

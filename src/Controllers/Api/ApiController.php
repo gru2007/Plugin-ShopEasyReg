@@ -7,7 +7,7 @@ use Azuriom\Http\Controllers\Controller;
 class ApiController extends Controller
 {
     /**
-     * Show the plugin API default page.
+     * Пример ответа API плагина.
      */
     public function index()
     {

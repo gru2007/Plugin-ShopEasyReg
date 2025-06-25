@@ -1,11 +1,11 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Admin plugin home')
+@section('title', 'Страница администратора')
 
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-body">
-            <p>This is the admin page of your plugin</p>
+            <p>Это административная страница плагина.</p>
         </div>
     </div>
 @endsection

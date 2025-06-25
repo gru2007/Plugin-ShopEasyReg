@@ -7,7 +7,7 @@ use Azuriom\Http\Controllers\Controller;
 class ShopEasyRegHomeController extends Controller
 {
     /**
-     * Show the home plugin page.
+     * Пример пользовательской страницы плагина.
      */
     public function index()
     {
